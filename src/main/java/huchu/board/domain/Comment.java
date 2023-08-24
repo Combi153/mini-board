@@ -17,9 +17,9 @@ public class Comment extends BaseEntity {
     @Id
     private Long id;
 
-    @JoinColumn(name = "user_id")
+    @JoinColumn(name = "member_id")
     @ManyToOne
-    private User writer;
+    private Member writer;
 
     @Column(nullable = false)
     private String content;
@@ -28,22 +28,25 @@ public class Comment extends BaseEntity {
     @ManyToOne
     private Post post;
 
+    @Column(nullable = false)
+    private boolean isDeleted = false;
+
     public Comment() {
     }
 
-    public Comment(Long id, User writer, String content, Post post) {
+    public Comment(Long id, Member writer, String content, Post post) {
         this.id = id;
         this.writer = writer;
         this.content = content;
         this.post = post;
     }
 
-    public Comment(User writer, String content, Post post) {
+    public Comment(Member writer, String content, Post post) {
         this(null, writer, content, post);
     }
 
-    public void validateAuthorization(User user) {
-        if (!writer.equals(user)) {
+    public void validateAuthorization(Member member) {
+        if (!writer.equals(member)) {
             throw new IllegalArgumentException();
         }
     }
@@ -52,12 +55,21 @@ public class Comment extends BaseEntity {
         this.content = content;
     }
 
+    public void delete() {
+        isDeleted = true;
+        post.removeComment(this);
+    }
+
     public Long id() {
         return id;
     }
 
-    public User writer() {
+    public Member writer() {
         return writer;
+    }
+
+    public String writerNickname() {
+        return writer.nickname();
     }
 
     public String content() {
@@ -66,5 +78,9 @@ public class Comment extends BaseEntity {
 
     public Post post() {
         return post;
+    }
+
+    public boolean isDeleted() {
+        return isDeleted;
     }
 }

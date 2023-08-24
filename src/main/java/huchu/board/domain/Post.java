@@ -4,6 +4,7 @@ import static jakarta.persistence.GenerationType.IDENTITY;
 
 import huchu.board.domain.common.BaseEntity;
 import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
@@ -12,6 +13,7 @@ import jakarta.persistence.OneToMany;
 import java.util.ArrayList;
 import java.util.List;
 
+@Entity
 public class Post extends BaseEntity {
 
     @GeneratedValue(strategy = IDENTITY)
@@ -30,6 +32,9 @@ public class Post extends BaseEntity {
 
     @OneToMany(mappedBy = "post")
     private List<Comment> comments = new ArrayList<>();
+
+    public Post() {
+    }
 
     public Post(Long id, User writer, String title, String content) {
         this.id = id;

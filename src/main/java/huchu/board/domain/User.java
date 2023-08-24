@@ -1,11 +1,25 @@
 package huchu.board.domain;
 
-import huchu.board.domain.common.BaseEntity;
+import static jakarta.persistence.GenerationType.IDENTITY;
 
+import huchu.board.domain.common.BaseEntity;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.Id;
+
+@Entity
 public class User extends BaseEntity {
 
+    @GeneratedValue(strategy = IDENTITY)
+    @Id
     private Long id;
+
+    @Column(nullable = false)
     private String nickname;
+
+    public User() {
+    }
 
     public User(Long id, String nickname) {
         this.id = id;

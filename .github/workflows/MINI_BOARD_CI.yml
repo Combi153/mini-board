@@ -3,7 +3,7 @@ name: MINI_BOARD_CI
 on:
   push:
     branches:
-      - develop
+      - develop/**
       - hotfix
 
 jobs:

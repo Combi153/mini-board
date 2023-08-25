@@ -20,9 +20,9 @@ public class Post extends BaseEntity {
     @Id
     private Long id;
 
-    @JoinColumn(name = "user_id")
+    @JoinColumn(name = "member_id")
     @ManyToOne
-    private User writer;
+    private Member writer;
 
     @Column(nullable = false)
     private String title;
@@ -33,22 +33,25 @@ public class Post extends BaseEntity {
     @OneToMany(mappedBy = "post")
     private List<Comment> comments = new ArrayList<>();
 
+    @Column(nullable = false)
+    private boolean isDeleted = false;
+
     public Post() {
     }
 
-    public Post(Long id, User writer, String title, String content) {
+    public Post(Long id, Member writer, String title, String content) {
         this.id = id;
         this.writer = writer;
         this.title = title;
         this.content = content;
     }
 
-    public Post(User writer, String title, String content) {
+    public Post(Member writer, String title, String content) {
         this(null, writer, title, content);
     }
 
-    public void validateAuthorization(User user) {
-        if (!writer.equals(user)) {
+    public void validateAuthorization(Member member) {
+        if (!writer.equals(member)) {
             throw new IllegalArgumentException();
         }
     }
@@ -58,12 +61,29 @@ public class Post extends BaseEntity {
         this.content = content;
     }
 
+    public void addComment(Comment comment) {
+        comments.add(comment);
+    }
+
+    public void removeComment(Comment comment) {
+        comments.remove(comment);
+    }
+
+    public void delete() {
+        comments.forEach(Comment::delete);
+        isDeleted = true;
+    }
+
     public Long id() {
         return id;
     }
 
-    public User writer() {
+    public Member writer() {
         return writer;
+    }
+
+    public String writerNickname() {
+        return writer.nickname();
     }
 
     public String title() {
@@ -75,6 +95,10 @@ public class Post extends BaseEntity {
     }
 
     public List<Comment> comments() {
-        return comments;
+        return new ArrayList<>(comments);
+    }
+
+    public boolean isDeleted() {
+        return isDeleted;
     }
 }

@@ -9,7 +9,7 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
 
 @Entity
-public class User extends BaseEntity {
+public class Member extends BaseEntity {
 
     @GeneratedValue(strategy = IDENTITY)
     @Id
@@ -18,15 +18,15 @@ public class User extends BaseEntity {
     @Column(nullable = false)
     private String nickname;
 
-    public User() {
+    public Member() {
     }
 
-    public User(Long id, String nickname) {
+    public Member(Long id, String nickname) {
         this.id = id;
         this.nickname = nickname;
     }
 
-    public User(String nickname) {
+    public Member(String nickname) {
         this(null, nickname);
     }
 

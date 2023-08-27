@@ -1,0 +1,3 @@
+[submodule "sub-module"]
+	path = sub-module
+	url = https://github.com/Combi153/sub-module.git
